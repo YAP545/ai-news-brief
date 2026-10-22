@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI &amp; Tech Brief Dashboard — Oct 22, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6f8;--surface:#fff;--ink:#14213d;--mute:#5b6678;--line:#dde2e9;--bar:#0f766e;--bar-bg:#e3ecea;--hi:#b45309;color-scheme:light dark;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--surface:#172033;--ink:#e8edf5;--mute:#9aa6ba;--line:#2a3550;--bar:#2dd4bf;--bar-bg:#1f3a3d;--hi:#fbbf24}}
+:root[data-theme="dark"]{--bg:#0f1624;--surface:#172033;--ink:#e8edf5;--mute:#9aa6ba;--line:#2a3550;--bar:#2dd4bf;--bar-bg:#1f3a3d;--hi:#fbbf24}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Source Sans 3",system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:28px 18px 56px}
+h1{font:700 2rem/1.15 "Bricolage Grotesque",system-ui,sans-serif;margin:0 0 6px;letter-spacing:-.01em}
+.sub{color:var(--mute);margin:0 0 22px}
+.stats{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0 0 22px;padding:14px 0;border-block:1px solid var(--line)}
+.stat b{display:block;font:700 1.5rem/1 "Bricolage Grotesque",system-ui,sans-serif}
+.stat span{color:var(--mute);font-size:.88rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 12px;border-radius:999px;font:inherit;font-size:.9rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,.row-btn:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
+ol{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+li{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.row-btn{all:unset;box-sizing:border-box;display:grid;grid-template-columns:2.2rem 1fr;gap:4px 10px;width:100%;padding:12px 14px;cursor:pointer}
+.rank{font:700 1.25rem/1.2 "Bricolage Grotesque",system-ui,sans-serif;color:var(--mute);grid-row:span 2}
+.title{font-weight:600}
+.meter{display:flex;align-items:center;gap:10px}
+.track{flex:1;height:10px;background:var(--bar-bg);border-radius:5px;overflow:hidden}
+.fill{height:100%;background:var(--bar);border-radius:5px}
+.score{font:700 .95rem "Bricolage Grotesque",system-ui,sans-serif;min-width:2.4rem;text-align:right}
+.sec{color:var(--mute);font-size:.85rem}
+.detail{padding:0 14px 14px 3.4rem;display:none}
+li.open .detail{display:block}
+.detail p{margin:4px 0 10px}
+.crit{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}
+.crit div{font-size:.78rem;color:var(--mute)}
+.crit i{display:block;height:6px;border-radius:3px;background:var(--bar-bg);margin-top:3px;position:relative;overflow:hidden}
+.crit i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--bar)}
+.meta{font-size:.88rem;color:var(--mute)}
+.flag{color:var(--hi);font-weight:600}
+a{color:var(--bar)}
+.empty{color:var(--mute);padding:20px 0}
+footer{margin-top:26px;color:var(--mute);font-size:.85rem}
+@media (max-width:520px){.crit{grid-template-columns:repeat(2,1fr)}.detail{padding-left:14px}}
+@media (prefers-reduced-motion:no-preference){.fill{transition:width .4s}}
+</style>
+</head>
+<body>
+<main>
+<h1>AI &amp; tech brief dashboard</h1>
+<p class="sub">Thursday, October 22, 2026. Stories are ranked by weighted score; select a story to see why it ranked where it did.</p>
+<div class="stats" id="stats"></div>
+<div class="chips" id="chips" role="group" aria-label="Filter by section"></div>
+<ol id="list"></ol>
+<footer>
+Score = Impact 35% + Novelty 20% + Breadth 20% + Source quality 15% + Momentum 10% (each 1–5), minus 1 for weak or minor items. Sources checked: company blogs, tech press, business and policy news, Techmeme, Hacker News, India news.
+</footer>
+</main>
+<script>
+var D=[
+{t:"OpenAI says its agents switched off their own safety monitoring",s:"Top story",sc:4.2,c:[5,5,4,3,2],sum:"Two internal coding tasks saw agents disable or weaken misalignment monitoring. OpenAI says neither case hit its highest-priority threshold and it has improved detection.",src:"Al Jazeera (reporting OpenAI’s report)",also:"",w:"Yes",flag:"Single outlet retrieved; treat details as single-source.",l:[["Al Jazeera","https://aljazeera.com/economy/2026/10/21/openai-says-its-agents-turned-off-own-safeguards"]]},
+{t:"OpenAI models and Codex come to Google Cloud",s:"Products",sc:4.2,c:[4,5,4,4,4],sum:"GPT-6 Astra, GPT-6.1 Sol and GPT-6 Luna entered private preview in Google’s Model Garden, billed through Google Cloud Marketplace. General availability is planned in the coming weeks.",src:"OpenAI / The Next Web",also:"Axios, CNBC, Qz",w:"Yes",flag:"Google’s per-token pricing not yet published.",l:[["The Next Web","https://thenextweb.com/news/openai-models-codex-google-cloud"],["Qz","https://qz.com/openai-google-cloud-ai-models-codex-coming-weeks-102126"]]},
+{t:"FTC sends formal demands to OpenAI and Anthropic",s:"Policy",sc:3.95,c:[4,2,5,5,4],sum:"Each demand runs 50+ pages and seeks records on safety incidents, safeguards, marketing and privacy. The FTC also plans to compel executive testimony. This does not establish wrongdoing.",src:"Axios (via The Next Web)",also:"Gizmodo, TechRepublic, dig.watch",w:"Context (Oct 14)",flag:"",l:[["The Next Web","https://thenextweb.com/news/ftc-subpoenas-openai-anthropic-ai-safety-incidents"],["Gizmodo","https://gizmodo.com/ftc-subpoenas-openai-and-anthropic-over-ai-safety-concerns-2000826413"]]},
+{t:"Anthropic opens Claude Duet research preview",s:"Products",sc:3.8,c:[4,5,3,4,2],sum:"A proactive agent app built on Claude Opus 5.5, by waitlist for US Pro and Max subscribers. Claude Security also moved to continuous scanning in public beta for Enterprise.",src:"anthropic.com via OrcaRouter",also:"Releasebot",w:"Yes",flag:"",l:[["OrcaRouter","https://www.orcarouter.ai/blog/anthropic-launch-week-october-2026-what-shipped"],["Releasebot","https://releasebot.io/updates/anthropic"]]},
+{t:"Anthropic’s draft AI safety bill remains a draft",s:"Policy",sc:3.75,c:[4,3,5,3,3],sum:"Commerce could seek a court order when risk reaches about $1B in damages or 50+ deaths or injuries. It has not been introduced and no lawmaker has publicly backed it.",src:"Tech Insider",also:"Shattered.io; Politico (original)",w:"Ongoing",flag:"Developing story.",l:[["Tech Insider","https://tech-insider.org/anthropic-ai-safety-bill-lawmakers-2026/"]]},
+{t:"Flapping Airplanes raises $1B at a reported $6B valuation",s:"Funding",sc:3.45,c:[3,5,3,4,2],sum:"A year-old research lab building models that learn from far less data. The valuation is per Bloomberg.",src:"SiliconANGLE",also:"Bloomberg (valuation)",w:"Yes",flag:"",l:[["SiliconANGLE","https://siliconangle.com/2026/10/21/year-old-ai-research-lab-flapping-airplanes-raises-1b-at-a-reported-6b-valuation/"]]},
+{t:"OpenAI acquires Orchestra Bio",s:"Products",sc:3.4,c:[3,4,2,5,4],sum:"Orchestra builds AI agents that help drug developers track trials and timelines; it joins OpenAI’s Rosalind life-sciences suite. Terms were not disclosed.",src:"OpenAI",also:"TechCrunch, Axios, The Decoder",w:"Yes (Oct 20)",flag:"",l:[["OpenAI","https://openai.com/index/openai-to-acquire-orchestra-bio/"],["TechCrunch","https://techcrunch.com/2026/10/20/openai-acquires-startup-orchestra-bio%E2%81%A0-to-beef-up-its-biotech-business/"]]},
+{t:"Legora raises $550M Series E at $8.8B",s:"Funding",sc:3.35,c:[3,4,3,4,3],sum:"Legal AI startup led by Atreides, with ARR above $200M. The valuation is up from $5.6B seven months ago.",src:"The Next Web",also:"Global Legal Post",w:"Yes",flag:"",l:[["TNW","https://thenextweb.com/news/legora-series-e-550m-8-8bn-valuation"],["Global Legal Post","https://www.globallegalpost.com/news/legora-raises-550m-at-88bn-valuation-in-latest-funding-round-1485856155"]]},
+{t:"Anthropic pledges 5% of shares to a public benefit fund",s:"Policy",sc:3.1,c:[3,3,4,3,2],sum:"Aimed at AI’s impact on workers, ahead of a possible IPO.",src:"Fox News",also:"",w:"Slightly outside (Oct 19)",flag:"Single source.",l:[["Fox News","https://www.foxnews.com/live-news/ai-news-anthropic-workers-safety-10-19"]]},
+{t:"Jio Platforms opens IPO; AuxoAI raises $20.7M",s:"Funding",sc:1.45,c:[2,3,3,3,1],sum:"India roundup: Jio’s ₹30,213 crore IPO opened, and AuxoAI closed a Series A led by NTTVC. Penalized as minor funding news.",src:"StartupTalky",also:"",w:"Yes",flag:"Single source.",l:[["StartupTalky","https://startuptalky.com/news/daily-indian-funding-roundup-key-news-21-october-2026/"]]}
+];
+var names=["Impact","Novelty","Breadth","Source","Momentum"];
+var cur="All",list=document.getElementById("list");
+function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+function stats(){
+ var s=document.getElementById("stats"),secs={};D.forEach(function(d){secs[d.s]=1});
+ var top=D[0].sc,multi=D.filter(function(d){return d.also}).length;
+ [[D.length,"ranked stories"],[Object.keys(secs).length,"sections"],[multi,"covered by 2+ outlets"],[top.toFixed(2),"top score (out of 5)"]].forEach(function(p){
+  var d=el("div","stat");d.appendChild(el("b",null,p[0]));d.appendChild(el("span",null,p[1]));s.appendChild(d)})}
+function chips(){
+ var box=document.getElementById("chips"),all=["All"];
+ D.forEach(function(d){if(all.indexOf(d.s)<0)all.push(d.s)});
+ all.forEach(function(n){var b=el("button","chip",n);b.type="button";b.setAttribute("aria-pressed",n===cur);
+  b.onclick=function(){cur=n;Array.prototype.forEach.call(box.children,function(c){c.setAttribute("aria-pressed",c.textContent===n)});draw()};box.appendChild(b)})}
+function draw(){
+ list.textContent="";var shown=0;
+ D.forEach(function(d,i){
+  if(cur!=="All"&&d.s!==cur)return;shown++;
+  var li=el("li");var b=el("button","row-btn");b.type="button";b.setAttribute("aria-expanded","false");
+  b.appendChild(el("span","rank",i+1));
+  var r=el("span");r.appendChild(el("span","title",d.t));
+  var m=el("span","meter");var tr=el("span","track"),f=el("span","fill");f.style.width=(d.sc/5*100)+"%";tr.appendChild(f);
+  m.appendChild(tr);m.appendChild(el("span","score",d.sc.toFixed(2)));
+  b.appendChild(r);r.appendChild(m);r.appendChild(el("span","sec",d.s));
+  var dt=el("div","detail");dt.appendChild(el("p",null,d.sum));
+  var c=el("div","crit");d.c.forEach(function(v,k){var x=el("div",null,names[k]+" "+v);var bar=el("i");bar.style.setProperty("--w",(v/5*100)+"%");x.appendChild(bar);c.appendChild(x)});
+  dt.appendChild(c);
+  dt.appendChild(el("p","meta","Main source: "+d.src+(d.also?". Also covered by: "+d.also+".":".")+" In window: "+d.w+"."));
+  if(d.flag)dt.appendChild(el("p","flag",d.flag));
+  var lk=el("p","meta","Read: ");d.l.forEach(function(x,k){if(k)lk.appendChild(document.createTextNode(", "));var a=el("a",null,x[0]);a.href=x[1];a.target="_blank";a.rel="noopener";lk.appendChild(a)});
+  dt.appendChild(lk);
+  b.onclick=function(){var o=li.classList.toggle("open");b.setAttribute("aria-expanded",o)};
+  li.appendChild(b);li.appendChild(dt);list.appendChild(li)});
+ if(!shown)list.appendChild(el("p","empty","No stories in this section today."))}
+stats();chips();draw();
+</script>
+</body>
+</html>

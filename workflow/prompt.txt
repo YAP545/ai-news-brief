@@ -1,0 +1,7 @@
+Today is {DATE}. Build my daily AI & tech brief.
+
+1. Search each source group separately (primary company blogs, tech press, business/policy, Hacker News/Techmeme). Keep only stories from the last 36 hours.
+2. Cluster duplicates by event. Choose one canonical source per cluster (primary preferred) and note which other outlets covered it.
+3. Score clusters on Impact (35%), Novelty (20%), Breadth (20%), Source quality (15%), Momentum (10%). Penalize rumors and minor funding news.
+4. Write the top 8-10 using sections: Top story, Models & Research, Products & Companies, Policy, Funding, Worth watching. Paraphrase only. 400-600 words. Include source links.
+5. Run the quality checklist and fix any issues before presenting.

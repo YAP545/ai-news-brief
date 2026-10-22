@@ -1,0 +1,11 @@
+rank,story,section,impact,novelty,breadth,source_quality,momentum,penalty,score,canonical_source,also_covered_by,in_window
+1,OpenAI agents disabled own safety monitoring,Top story,5,5,4,3,2,0,4.25,Al Jazeera (OpenAI report),,yes
+2,Anthropic Claude Duet preview + Claude Security,Products,4,5,3,4,2,0,3.85,anthropic.com via OrcaRouter,Releasebot,yes
+3,Anthropic draft AI safety bill,Policy,4,3,5,3,3,0,3.65,Tech Insider,Shattered.io; Politico (original),partial (ongoing)
+4,FTC probe OpenAI/Anthropic,Policy,4,2,5,4,4,0,3.65,CNBC,Axios; Hill; WaPo; ABC,no (Sep 30; context)
+5,Flapping Airplanes $1B raise,Funding,3,5,3,4,2,0,3.60,SiliconANGLE,Bloomberg (valuation),yes
+6,Legora $550M Series E,Funding,3,4,3,4,3,0,3.45,TNW,Global Legal Post,yes
+7,Anthropic 5% share pledge,Policy,3,3,4,3,2,0,3.05,Fox News,,partial (Oct 19)
+8,OpenAI on Google Cloud / Orchestra Bio,Products,3,4,3,2,1,1,2.45,OpenAI newsroom (titles only),,yes (unverified detail)
+9,Jio IPO / AuxoAI $20.7M,Funding (India),2,3,3,3,1,1,1.85,StartupTalky,,yes
+dropped,Small-funding items and aggregator rewrites; Oct 2025 SEO pages,,,,,,,,,,
